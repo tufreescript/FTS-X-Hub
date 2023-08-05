@@ -2142,7 +2142,7 @@ local Misc = Library:AddTab("Miscellaneous","6034509993")
 local fast = Library:AddTab("Setting & fast attack","Attack")
 --------------------------------------------------------------------
 Main:AddSeperator("YT:Tu Free Script - FTSXHUB - Freescript")
-Main:AddSeperator("V1 Make")
+Main:AddSeperator("V1 Made")
 
 Time = Main:AddLabel("Server Time")
 
