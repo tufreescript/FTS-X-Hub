@@ -1,0 +1,309 @@
+
+local CoreGui = game:GetService("CoreGui")
+if CoreGui:FindFirstChild("TuScriptCyberHub") then
+    CoreGui.TuScriptCyberHub:Destroy()
+end
+
+local TweenService = game:GetService("TweenService")
+local MarketplaceService = game:GetService("MarketplaceService")
+
+local function decryptUrl(byteTable)
+    local charTable = {}
+    for i = 1, #byteTable do
+        charTable[i] = string.char(byteTable[i])
+    end
+    return table.concat(charTable)
+end
+
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "TuScriptCyberHub"
+ScreenGui.Parent = CoreGui
+ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+ScreenGui.ResetOnSpawn = false
+
+local MainFrame = Instance.new("Frame")
+MainFrame.Name = "MainFrame"
+MainFrame.Parent = ScreenGui
+MainFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 22)
+MainFrame.Position = UDim2.new(0.5, -200, 0.5, -245)
+MainFrame.Size = UDim2.new(0, 0, 0, 0)
+MainFrame.Active = true
+MainFrame.Draggable = true
+MainFrame.ClipsDescendants = true
+
+local MainCorner = Instance.new("UICorner")
+MainCorner.CornerRadius = UDim.new(0, 14)
+MainCorner.Parent = MainFrame
+
+local MainStroke = Instance.new("UIStroke")
+MainStroke.Color = Color3.fromRGB(138, 43, 226) -- Tím neon
+MainStroke.Thickness = 2
+MainStroke.Parent = MainFrame
+
+task.spawn(function()
+    local openTween = TweenService:Create(MainFrame, TweenInfo.new(0.35, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
+        Size = UDim2.new(0, 400, 0, 490),
+        Position = UDim2.new(0.5, -200, 0.5, -245)
+    })
+    openTween:Play()
+end)
+
+local function closeUI(callback)
+    local closeTween = TweenService:Create(MainFrame, TweenInfo.new(0.25, Enum.EasingStyle.Back, Enum.EasingDirection.In), {
+        Size = UDim2.new(0, 0, 0, 0),
+        Position = UDim2.new(0.5, 0, 0.5, 0)
+    })
+    closeTween:Play()
+    closeTween.Completed:Wait()
+    ScreenGui:Destroy()
+    if callback then callback() end
+end
+
+local TopBar = Instance.new("Frame")
+TopBar.Name = "TopBar"
+TopBar.Parent = MainFrame
+TopBar.BackgroundColor3 = Color3.fromRGB(22, 20, 35)
+TopBar.Size = UDim2.new(1, 0, 0, 48)
+
+local TopBarCorner = Instance.new("UICorner")
+TopBarCorner.CornerRadius = UDim.new(0, 14)
+TopBarCorner.Parent = TopBar
+
+local FixCorner = Instance.new("Frame")
+FixCorner.Parent = TopBar
+FixCorner.BackgroundColor3 = Color3.fromRGB(22, 20, 35)
+FixCorner.BorderSizePixel = 0
+FixCorner.Position = UDim2.new(0, 0, 1, -6)
+FixCorner.Size = UDim2.new(1, 0, 0, 6)
+
+local TitleIcon = Instance.new("TextLabel")
+TitleIcon.Parent = TopBar
+TitleIcon.BackgroundTransparency = 1
+TitleIcon.Position = UDim2.new(0, 15, 0, 0)
+TitleIcon.Size = UDim2.new(0, 30, 1, 0)
+TitleIcon.Font = Enum.Font.GothamBold
+TitleIcon.Text = ""
+TitleIcon.TextSize = 18
+
+local TitleText = Instance.new("TextLabel")
+TitleText.Parent = TopBar
+TitleText.BackgroundTransparency = 1
+TitleText.Position = UDim2.new(0, 50, 0, 0)
+TitleText.Size = UDim2.new(1, -70, 1, 0)
+TitleText.Font = Enum.Font.GothamBold
+TitleText.Text = "FTS HUB // SELECT GAME"
+TitleText.TextColor3 = Color3.fromRGB(255, 105, 180)
+TitleText.TextSize = 15
+TitleText.TextXAlignment = Enum.TextXAlignment.Left
+
+local CloseBtn = Instance.new("TextButton")
+CloseBtn.Parent = TopBar
+CloseBtn.BackgroundColor3 = Color3.fromRGB(255, 45, 85)
+CloseBtn.Position = UDim2.new(1, -38, 0.5, -13)
+CloseBtn.Size = UDim2.new(0, 26, 0, 26)
+CloseBtn.Font = Enum.Font.GothamBold
+CloseBtn.Text = "X"
+CloseBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+CloseBtn.TextSize = 12
+
+local CloseCorner = Instance.new("UICorner")
+CloseCorner.CornerRadius = UDim.new(1, 0)
+CloseCorner.Parent = CloseBtn
+
+CloseBtn.MouseButton1Click:Connect(function()
+    closeUI()
+end)
+
+local DiscordBtn = Instance.new("TextButton")
+DiscordBtn.Parent = MainFrame
+DiscordBtn.BackgroundColor3 = Color3.fromRGB(88, 101, 242)
+DiscordBtn.Position = UDim2.new(0, 12, 0, 56)
+DiscordBtn.Size = UDim2.new(1, -24, 0, 32)
+DiscordBtn.Font = Enum.Font.GothamBold
+DiscordBtn.Text = " 💬 Join Discord Server"
+DiscordBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+DiscordBtn.TextSize = 13
+
+local DiscordCorner = Instance.new("UICorner")
+DiscordCorner.CornerRadius = UDim.new(0, 8)
+DiscordCorner.Parent = DiscordBtn
+
+DiscordBtn.MouseEnter:Connect(function()
+    TweenService:Create(DiscordBtn, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(114, 137, 218)}):Play()
+end)
+DiscordBtn.MouseLeave:Connect(function()
+    TweenService:Create(DiscordBtn, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(88, 101, 242)}):Play()
+end)
+
+DiscordBtn.MouseButton1Click:Connect(function()
+    local inviteLink = "https://discord.gg/SxSRKSRGEk"
+    if setclipboard then
+        setclipboard(inviteLink)
+        DiscordBtn.Text = " ✓ Copied Discord Link!"
+    else
+        DiscordBtn.Text = " " .. inviteLink
+    end
+    task.wait(2)
+    DiscordBtn.Text = " 💬 Join Discord Server"
+end)
+
+local ScrollingFrame = Instance.new("ScrollingFrame")
+ScrollingFrame.Parent = MainFrame
+ScrollingFrame.BackgroundColor3 = Color3.fromRGB(12, 12, 18)
+ScrollingFrame.BorderSizePixel = 0
+ScrollingFrame.Position = UDim2.new(0, 12, 0, 96)
+ScrollingFrame.Size = UDim2.new(1, -24, 1, -106)
+ScrollingFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
+ScrollingFrame.ScrollBarThickness = 4
+ScrollingFrame.ScrollBarImageColor3 = Color3.fromRGB(138, 43, 226)
+
+local UIListLayout = Instance.new("UIListLayout")
+UIListLayout.Parent = ScrollingFrame
+UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UIListLayout.Padding = UDim.new(0, 10)
+
+local gameList = {
+    {
+        input = "https://www.roblox.com/games/93660722909304/Fatal-Baboonsl",
+        scriptBytes = {108,111,97,100,115,116,114,105,110,103,40,103,97,109,101,58,72,116,116,112,71,101,116,40,39,104,116,116,112,115,58,47,47,114,97,119,46,103,105,116,104,117,98,117,115,101,114,99,111,110,116,101,110,116,46,99,111,109,47,116,117,102,114,101,101,115,99,114,105,112,116,47,70,84,83,45,88,45,72,117,98,47,114,101,102,115,47,104,101,97,100,115,47,109,97,105,110,47,115,99,97,114,121,98,111,39,41,41,40,41}
+    },
+    {
+        input = "https://www.roblox.com/games/15318113891/Lethal-Ape",
+        scriptBytes = {108,111,97,100,115,116,114,105,110,103,40,103,97,109,101,58,72,116,116,112,71,101,116,40,39,104,116,116,112,115,58,47,47,114,97,119,46,103,105,116,104,117,98,117,115,101,114,99,111,110,116,101,110,116,46,99,111,109,47,116,117,102,114,101,101,115,99,114,105,112,116,47,70,84,83,45,72,117,98,47,114,101,102,115,47,104,101,97,100,115,47,109,97,105,110,47,108,101,116,104,97,108,117,112,39,41,41,40,41}
+    },
+    {
+        input = "https://www.roblox.com/games/117713779364528/Lethal-Ape-Experience",
+        scriptBytes = {108,111,97,100,115,116,114,105,110,103,40,103,97,109,101,58,72,116,116,112,71,101,116,40,39,104,116,116,112,115,58,47,47,114,97,119,46,103,105,116,104,117,98,117,115,101,114,99,111,110,116,101,110,116,46,99,111,109,47,116,117,102,114,101,101,115,99,114,105,112,116,47,70,84,83,45,88,45,72,117,98,47,114,101,102,115,47,104,101,97,100,115,47,109,97,105,110,47,76,101,46,116,120,116,39,41,41,40,41}
+    },
+    {
+        input = "https://www.roblox.com/games/84487474244896/Ear-Game",
+        scriptBytes = {108,111,97,100,115,116,114,105,110,103,40,103,97,109,101,58,72,116,116,112,71,101,116,40,39,104,116,116,112,115,58,47,47,114,97,119,46,103,105,116,104,117,98,117,115,101,114,99,111,110,116,101,110,116,46,99,111,109,47,116,117,102,114,101,101,115,99,114,105,112,116,47,70,84,83,45,88,45,72,117,98,47,114,101,102,115,47,104,101,97,100,115,47,109,97,105,110,47,69,97,114,39,41,41,40,41}
+    }
+}
+
+local function extractPlaceId(input)
+    if type(input) == "number" then return input end
+    if type(input) == "string" then
+        local id = input:match("/games/(%d+)")
+        if id then return tonumber(id) end
+        return tonumber(input)
+    end
+    return nil
+end
+
+for i, data in ipairs(gameList) do
+    local placeId = extractPlaceId(data.input)
+
+    local ItemFrame = Instance.new("Frame")
+    ItemFrame.Name = "GameItem_" .. i
+    ItemFrame.Parent = ScrollingFrame
+    ItemFrame.BackgroundColor3 = Color3.fromRGB(24, 22, 38)
+    ItemFrame.Size = UDim2.new(1, -6, 0, 78)
+
+    local ItemCorner = Instance.new("UICorner")
+    ItemCorner.CornerRadius = UDim.new(0, 10)
+    ItemCorner.Parent = ItemFrame
+
+    local ItemStroke = Instance.new("UIStroke")
+    ItemStroke.Color = Color3.fromRGB(80, 50, 140)
+    ItemStroke.Thickness = 1.2
+    ItemStroke.Parent = ItemFrame
+
+    local Thumbnail = Instance.new("ImageLabel")
+    Thumbnail.Parent = ItemFrame
+    Thumbnail.BackgroundColor3 = Color3.fromRGB(15, 15, 22)
+    Thumbnail.Position = UDim2.new(0, 10, 0, 11)
+    Thumbnail.Size = UDim2.new(0, 56, 0, 56)
+    Thumbnail.Image = "rbxassetid://0"
+    Thumbnail.ClipsDescendants = true
+
+    local ThumbCorner = Instance.new("UICorner")
+    ThumbCorner.CornerRadius = UDim.new(0, 8)
+    ThumbCorner.Parent = Thumbnail
+
+    local ThumbStroke = Instance.new("UIStroke")
+    ThumbStroke.Color = Color3.fromRGB(255, 105, 180)
+    ThumbStroke.Thickness = 1
+    ThumbStroke.Parent = Thumbnail
+
+    local NameLabel = Instance.new("TextLabel")
+    NameLabel.Parent = ItemFrame
+    NameLabel.BackgroundTransparency = 1
+    NameLabel.Position = UDim2.new(0, 76, 0, 12)
+    NameLabel.Size = UDim2.new(1, -170, 0, 54)
+    NameLabel.Font = Enum.Font.GothamBold
+    NameLabel.TextColor3 = Color3.fromRGB(240, 240, 255)
+    NameLabel.TextSize = 13
+    NameLabel.TextXAlignment = Enum.TextXAlignment.Left
+    NameLabel.TextYAlignment = Enum.TextYAlignment.Top
+    NameLabel.TextWrapped = true
+    NameLabel.Text = "load..."
+
+    local RunButton = Instance.new("TextButton")
+    RunButton.Parent = ItemFrame
+    RunButton.BackgroundColor3 = Color3.fromRGB(0, 229, 255)
+    RunButton.Position = UDim2.new(1, -82, 0.5, -19)
+    RunButton.Size = UDim2.new(0, 72, 0, 38)
+    RunButton.Font = Enum.Font.GothamBold
+    RunButton.Text = " ▶ RUN"
+    RunButton.TextColor3 = Color3.fromRGB(15, 15, 22)
+    RunButton.TextSize = 13
+
+    local BtnCorner = Instance.new("UICorner")
+    BtnCorner.CornerRadius = UDim.new(0, 8)
+    BtnCorner.Parent = RunButton
+
+    RunButton.MouseEnter:Connect(function()
+        TweenService:Create(RunButton, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(0, 255, 180)}):Play()
+    end)
+    RunButton.MouseLeave:Connect(function()
+        TweenService:Create(RunButton, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(0, 229, 255)}):Play()
+    end)
+
+    task.spawn(function()
+        if not placeId then
+            NameLabel.Text = "error"
+            return
+        end
+
+        local success, info = pcall(function()
+            return MarketplaceService:GetProductInfo(placeId)
+        end)
+        
+        if success and info then
+            NameLabel.Text = info.Name
+            if info.IconImageAssetId and info.IconImageAssetId > 0 then
+                Thumbnail.Image = "rbxassetid://" .. tostring(info.IconImageAssetId)
+            else
+                Thumbnail.Image = "rbxassetid://" .. tostring(placeId)
+            end
+        else
+            NameLabel.Text = "Game ID: " .. tostring(placeId)
+            Thumbnail.Image = "rbxassetid://" .. tostring(placeId)
+        end
+    end)
+
+    RunButton.MouseButton1Click:Connect(function()
+        local clickTween = TweenService:Create(RunButton, TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+            Size = UDim2.new(0, 78, 0, 41), 
+            Position = UDim2.new(1, -85, 0.5, -20.5)
+        })
+        clickTween:Play()
+        clickTween.Completed:Wait()
+        
+        local realScriptUrl = decryptUrl(data.scriptBytes)
+
+        closeUI(function()
+            task.spawn(function()
+                local success, err = pcall(function()
+                    loadstring(realScriptUrl)()
+                end)
+                if not success then
+                    warn("error: " .. tostring(err))
+                end
+            end)
+        end)
+    end)
+end
+
+ScrollingFrame.CanvasSize = UDim2.new(0, 0, 0, (#gameList * 88) + 5)
