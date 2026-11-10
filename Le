@@ -180,7 +180,11 @@ local gameList = {
     },
     {
         input = "https://www.roblox.com/games/106920577206536/A-Quiet-Place-Deadzone",
-        scriptUrl = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/tufreescript/T-Hub/refs/heads/main/slient"))()' -- Game cuối dùng link trực tiếp không mã hóa
+        scriptUrl = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/tufreescript/T-Hub/refs/heads/main/slient"))()'
+    },
+    {
+        input = "https://www.roblox.com/games/78724049937437/Paint-And-SEEK",
+        scriptUrl = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/tufreescript/FTS-X-Hub/refs/heads/main/paintandseek"))()'
     }
 }
 
@@ -294,7 +298,6 @@ for i, data in ipairs(gameList) do
         clickTween:Play()
         clickTween.Completed:Wait()
         
-        -- Lấy trực tiếp scriptUrl nếu có, hoặc giải mã nếu dùng scriptBytes
         local finalScript = data.scriptUrl or decryptUrl(data.scriptBytes)
 
         closeUI(function()
