@@ -185,6 +185,10 @@ local gameList = {
     {
         input = "https://www.roblox.com/games/78724049937437/Paint-And-SEEK",
         scriptUrl = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/tufreescript/FTS-X-Hub/refs/heads/main/paintandseek"))()'
+    },
+    {
+        input = "https://www.roblox.com/games/100860415498291/MM2-of-The-Monsters",
+        scriptUrl = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/tufreescript/Test-Hub/refs/heads/main/locus"))()'
     }
 }
 
