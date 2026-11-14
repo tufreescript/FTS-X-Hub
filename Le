@@ -5,6 +5,7 @@ end
 
 local TweenService = game:GetService("TweenService")
 local MarketplaceService = game:GetService("MarketplaceService")
+local Players = game:GetService("Players")
 
 local function decryptUrl(byteTable)
     local charTable = {}
@@ -20,11 +21,12 @@ ScreenGui.Parent = CoreGui
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 ScreenGui.ResetOnSpawn = false
 
+-- Khung chính (Main Frame)
 local MainFrame = Instance.new("Frame")
 MainFrame.Name = "MainFrame"
 MainFrame.Parent = ScreenGui
 MainFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 22)
-MainFrame.Position = UDim2.new(0.5, -200, 0.5, -245)
+MainFrame.Position = UDim2.new(0.5, -295, 0.5, -245)
 MainFrame.Size = UDim2.new(0, 0, 0, 0)
 MainFrame.Active = true
 MainFrame.Draggable = true
@@ -39,10 +41,11 @@ MainStroke.Color = Color3.fromRGB(138, 43, 226) -- Tím neon
 MainStroke.Thickness = 2
 MainStroke.Parent = MainFrame
 
+-- Hiệu ứng mở bảng chính
 task.spawn(function()
     local openTween = TweenService:Create(MainFrame, TweenInfo.new(0.35, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
-        Size = UDim2.new(0, 400, 0, 490),
-        Position = UDim2.new(0.5, -200, 0.5, -245)
+        Size = UDim2.new(0, 590, 0, 490),
+        Position = UDim2.new(0.5, -295, 0.5, -245)
     })
     openTween:Play()
 end)
@@ -58,6 +61,7 @@ local function closeUI(callback)
     if callback then callback() end
 end
 
+-- Tiêu đề (Top Bar)
 local TopBar = Instance.new("Frame")
 TopBar.Name = "TopBar"
 TopBar.Parent = MainFrame
@@ -75,24 +79,15 @@ FixCorner.BorderSizePixel = 0
 FixCorner.Position = UDim2.new(0, 0, 1, -6)
 FixCorner.Size = UDim2.new(1, 0, 0, 6)
 
-local TitleIcon = Instance.new("TextLabel")
-TitleIcon.Parent = TopBar
-TitleIcon.BackgroundTransparency = 1
-TitleIcon.Position = UDim2.new(0, 15, 0, 0)
-TitleIcon.Size = UDim2.new(0, 30, 1, 0)
-TitleIcon.Font = Enum.Font.GothamBold
-TitleIcon.Text = ""
-TitleIcon.TextSize = 18
-
 local TitleText = Instance.new("TextLabel")
 TitleText.Parent = TopBar
 TitleText.BackgroundTransparency = 1
-TitleText.Position = UDim2.new(0, 50, 0, 0)
-TitleText.Size = UDim2.new(1, -70, 1, 0)
+TitleText.Position = UDim2.new(0, 15, 0, 0)
+TitleText.Size = UDim2.new(1, -55, 1, 0)
 TitleText.Font = Enum.Font.GothamBold
 TitleText.Text = "FTS HUB // SELECT GAME"
 TitleText.TextColor3 = Color3.fromRGB(255, 105, 180)
-TitleText.TextSize = 15
+TitleText.TextSize = 14
 TitleText.TextXAlignment = Enum.TextXAlignment.Left
 
 local CloseBtn = Instance.new("TextButton")
@@ -113,11 +108,12 @@ CloseBtn.MouseButton1Click:Connect(function()
     closeUI()
 end)
 
+-- Nút Join Discord
 local DiscordBtn = Instance.new("TextButton")
 DiscordBtn.Parent = MainFrame
 DiscordBtn.BackgroundColor3 = Color3.fromRGB(88, 101, 242)
 DiscordBtn.Position = UDim2.new(0, 12, 0, 56)
-DiscordBtn.Size = UDim2.new(1, -24, 0, 32)
+DiscordBtn.Size = UDim2.new(0, 382, 0, 32)
 DiscordBtn.Font = Enum.Font.GothamBold
 DiscordBtn.Text = " 💬 Join Discord Server"
 DiscordBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -146,12 +142,13 @@ DiscordBtn.MouseButton1Click:Connect(function()
     DiscordBtn.Text = " 💬 Join Discord Server"
 end)
 
+-- Thanh cuộn danh sách game (Bên trái)
 local ScrollingFrame = Instance.new("ScrollingFrame")
 ScrollingFrame.Parent = MainFrame
 ScrollingFrame.BackgroundColor3 = Color3.fromRGB(12, 12, 18)
 ScrollingFrame.BorderSizePixel = 0
 ScrollingFrame.Position = UDim2.new(0, 12, 0, 96)
-ScrollingFrame.Size = UDim2.new(1, -24, 1, -106)
+ScrollingFrame.Size = UDim2.new(0, 382, 1, -106)
 ScrollingFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
 ScrollingFrame.ScrollBarThickness = 4
 ScrollingFrame.ScrollBarImageColor3 = Color3.fromRGB(138, 43, 226)
@@ -161,6 +158,112 @@ UIListLayout.Parent = ScrollingFrame
 UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
 UIListLayout.Padding = UDim.new(0, 10)
 
+-- ==========================================
+-- BẢNG QUÉT ID GAME HIỆN TẠI (BÊN PHẢI)
+-- ==========================================
+local ScannerFrame = Instance.new("Frame")
+ScannerFrame.Parent = MainFrame
+ScannerFrame.BackgroundColor3 = Color3.fromRGB(20, 18, 30)
+ScannerFrame.Position = UDim2.new(0, 406, 0, 56)
+ScannerFrame.Size = UDim2.new(0, 172, 1, -66)
+
+local ScannerCorner = Instance.new("UICorner")
+ScannerCorner.CornerRadius = UDim.new(0, 10)
+ScannerCorner.Parent = ScannerFrame
+
+local ScannerStroke = Instance.new("UIStroke")
+ScannerStroke.Color = Color3.fromRGB(138, 43, 226)
+ScannerStroke.Thickness = 1.2
+ScannerStroke.Parent = ScannerFrame
+
+local ScannerTitle = Instance.new("TextLabel")
+ScannerTitle.Parent = ScannerFrame
+ScannerTitle.BackgroundTransparency = 1
+ScannerTitle.Position = UDim2.new(0, 10, 0, 10)
+ScannerTitle.Size = UDim2.new(1, -20, 0, 24)
+ScannerTitle.Font = Enum.Font.GothamBold
+ScannerTitle.Text = "RECOMMENDED"
+ScannerTitle.TextColor3 = Color3.fromRGB(0, 229, 255)
+ScannerTitle.TextSize = 13
+ScannerTitle.TextXAlignment = Enum.TextXAlignment.Center
+
+-- Thumbnail game hiện tại
+local ScanThumb = Instance.new("ImageLabel")
+ScanThumb.Parent = ScannerFrame
+ScanThumb.BackgroundColor3 = Color3.fromRGB(12, 12, 18)
+ScanThumb.Position = UDim2.new(0.5, -35, 0, 44)
+ScanThumb.Size = UDim2.new(0, 70, 0, 70)
+ScanThumb.Image = "rbxassetid://0"
+ScanThumb.ClipsDescendants = true
+
+local ScanThumbCorner = Instance.new("UICorner")
+ScanThumbCorner.CornerRadius = UDim.new(0, 8)
+ScanThumbCorner.Parent = ScanThumb
+
+local ScanThumbStroke = Instance.new("UIStroke")
+ScanThumbStroke.Color = Color3.fromRGB(255, 105, 180)
+ScanThumbStroke.Thickness = 1
+ScanThumbStroke.Parent = ScanThumb
+
+-- Tên game hiện tại
+local ScanName = Instance.new("TextLabel")
+ScanName.Parent = ScannerFrame
+ScanName.BackgroundTransparency = 1
+ScanName.Position = UDim2.new(0, 8, 0, 122)
+ScanName.Size = UDim2.new(1, -16, 0, 55)
+ScanName.Font = Enum.Font.GothamBold
+ScanName.TextColor3 = Color3.fromRGB(240, 240, 255)
+ScanName.TextSize = 12
+ScanName.TextXAlignment = Enum.TextXAlignment.Center
+ScanName.TextYAlignment = Enum.TextYAlignment.Top
+ScanName.TextWrapped = true
+ScanName.Text = "Đang quét..."
+
+-- ID game hiện tại
+local ScanIdLabel = Instance.new("TextLabel")
+ScanIdLabel.Parent = ScannerFrame
+ScanIdLabel.BackgroundTransparency = 1
+ScanIdLabel.Position = UDim2.new(0, 8, 0, 182)
+ScanIdLabel.Size = UDim2.new(1, -16, 0, 24)
+ScanIdLabel.Font = Enum.Font.Gotham
+ScanIdLabel.TextColor3 = Color3.fromRGB(180, 180, 200)
+ScanIdLabel.TextSize = 11
+ScanIdLabel.TextXAlignment = Enum.TextXAlignment.Center
+ScanIdLabel.Text = "ID: ..."
+
+-- Trạng thái có trong danh sách hay không
+local ScanStatus = Instance.new("TextLabel")
+ScanStatus.Parent = ScannerFrame
+ScanStatus.BackgroundTransparency = 1
+ScanStatus.Position = UDim2.new(0, 8, 0, 212)
+ScanStatus.Size = UDim2.new(1, -16, 0, 45)
+ScanStatus.Font = Enum.Font.GothamBold
+ScanStatus.TextColor3 = Color3.fromRGB(255, 75, 75)
+ScanStatus.TextSize = 11
+ScanStatus.TextXAlignment = Enum.TextXAlignment.Center
+ScanStatus.TextYAlignment = Enum.TextYAlignment.Top
+ScanStatus.TextWrapped = true
+ScanStatus.Text = "Đang kiểm tra..."
+
+-- Nút Run cho game hiện tại (chỉ hiện khi có trong danh sách)
+local ScanRunBtn = Instance.new("TextButton")
+ScanRunBtn.Parent = ScannerFrame
+ScanRunBtn.BackgroundColor3 = Color3.fromRGB(0, 229, 255)
+ScanRunBtn.Position = UDim2.new(0.5, -70, 1, -52)
+ScanRunBtn.Size = UDim2.new(0, 140, 0, 36)
+ScanRunBtn.Font = Enum.Font.GothamBold
+ScanRunBtn.Text = " ▶ RUN SCRIPT"
+ScanRunBtn.TextColor3 = Color3.fromRGB(15, 15, 22)
+ScanRunBtn.TextSize = 12
+ScanRunBtn.Visible = false -- Mặc định ẩn, chỉ hiện khi khớp game
+
+local ScanBtnCorner = Instance.new("UICorner")
+ScanBtnCorner.CornerRadius = UDim.new(0, 8)
+ScanBtnCorner.Parent = ScanRunBtn
+
+-- ==========================================
+-- DANH SÁCH GAME TRONG HUB
+-- ==========================================
 local gameList = {
     {
         input = "https://www.roblox.com/games/93660722909304/Fatal-Baboonsl",
@@ -202,6 +305,7 @@ local function extractPlaceId(input)
     return nil
 end
 
+-- Tạo danh sách giao diện các game bên trái
 for i, data in ipairs(gameList) do
     local placeId = extractPlaceId(data.input)
 
@@ -241,7 +345,7 @@ for i, data in ipairs(gameList) do
     NameLabel.Parent = ItemFrame
     NameLabel.BackgroundTransparency = 1
     NameLabel.Position = UDim2.new(0, 76, 0, 12)
-    NameLabel.Size = UDim2.new(1, -170, 0, 54)
+    NameLabel.Size = UDim2.new(1, -162, 0, 54)
     NameLabel.Font = Enum.Font.GothamBold
     NameLabel.TextColor3 = Color3.fromRGB(240, 240, 255)
     NameLabel.TextSize = 13
@@ -253,12 +357,12 @@ for i, data in ipairs(gameList) do
     local RunButton = Instance.new("TextButton")
     RunButton.Parent = ItemFrame
     RunButton.BackgroundColor3 = Color3.fromRGB(0, 229, 255)
-    RunButton.Position = UDim2.new(1, -82, 0.5, -19)
-    RunButton.Size = UDim2.new(0, 72, 0, 38)
+    RunButton.Position = UDim2.new(1, -78, 0.5, -19)
+    RunButton.Size = UDim2.new(0, 68, 0, 38)
     RunButton.Font = Enum.Font.GothamBold
     RunButton.Text = " ▶ RUN"
     RunButton.TextColor3 = Color3.fromRGB(15, 15, 22)
-    RunButton.TextSize = 13
+    RunButton.TextSize = 12
 
     local BtnCorner = Instance.new("UICorner")
     BtnCorner.CornerRadius = UDim.new(0, 8)
@@ -296,8 +400,8 @@ for i, data in ipairs(gameList) do
 
     RunButton.MouseButton1Click:Connect(function()
         local clickTween = TweenService:Create(RunButton, TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
-            Size = UDim2.new(0, 78, 0, 41), 
-            Position = UDim2.new(1, -85, 0.5, -20.5)
+            Size = UDim2.new(0, 74, 0, 41), 
+            Position = UDim2.new(1, -81, 0.5, -20.5)
         })
         clickTween:Play()
         clickTween.Completed:Wait()
@@ -318,3 +422,59 @@ for i, data in ipairs(gameList) do
 end
 
 ScrollingFrame.CanvasSize = UDim2.new(0, 0, 0, (#gameList * 88) + 5)
+
+-- ==========================================
+-- XỬ LÝ LOGIC QUÉT ID GAME HIỆN TẠI
+-- ==========================================
+task.spawn(function()
+    local currentPlaceId = game.PlaceId
+    ScanIdLabel.Text = "ID: " .. tostring(currentPlaceId)
+
+    local matchedGame = nil
+    for _, data in ipairs(gameList) do
+        if extractPlaceId(data.input) == currentPlaceId then
+            matchedGame = data
+            break
+        end
+    end
+
+    local success, info = pcall(function()
+        return MarketplaceService:GetProductInfo(currentPlaceId)
+    end)
+
+    if success and info then
+        ScanName.Text = info.Name
+        if info.IconImageAssetId and info.IconImageAssetId > 0 then
+            ScanThumb.Image = "rbxassetid://" .. tostring(info.IconImageAssetId)
+        else
+            ScanThumb.Image = "rbxassetid://" .. tostring(currentPlaceId)
+        end
+    else
+        ScanName.Text = "Unknown Game"
+        ScanThumb.Image = "rbxassetid://" .. tostring(currentPlaceId)
+    end
+
+    if matchedGame then
+        ScanStatus.TextColor3 = Color3.fromRGB(0, 255, 128)
+        ScanStatus.Text = "✓ Supported Game"
+        ScanRunBtn.Visible = true
+
+        ScanRunBtn.MouseButton1Click:Connect(function()
+            local finalScript = matchedGame.scriptUrl or decryptUrl(matchedGame.scriptBytes)
+            closeUI(function()
+                task.spawn(function()
+                    local success, err = pcall(function()
+                        loadstring(finalScript)()
+                    end)
+                    if not success then
+                        warn("error: " .. tostring(err))
+                    end
+                end)
+            end)
+        end)
+    else
+        ScanStatus.TextColor3 = Color3.fromRGB(255, 75, 75)
+        ScanStatus.Text = "X Not Supported"
+        ScanRunBtn.Visible = false
+    end
+end)
