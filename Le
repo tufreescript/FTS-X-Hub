@@ -290,6 +290,10 @@ local gameList = {
         scriptUrl = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/tufreescript/FTS-X-Hub/refs/heads/main/paintandseek"))()'
     },
     {
+        input = "https://www.roblox.com/games/81688312343760/MOUSE",
+        scriptUrl = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/tufreescript/T-Hub/refs/heads/main/mou"))()'
+    },
+    {
         input = "https://www.roblox.com/games/100860415498291/MM2-of-The-Monsters",
         scriptUrl = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/tufreescript/Test-Hub/refs/heads/main/locus"))()'
     }
