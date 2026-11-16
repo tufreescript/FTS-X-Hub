@@ -21,7 +21,6 @@ ScreenGui.Parent = CoreGui
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 ScreenGui.ResetOnSpawn = false
 
--- Khung chính (Main Frame)
 local MainFrame = Instance.new("Frame")
 MainFrame.Name = "MainFrame"
 MainFrame.Parent = ScreenGui
@@ -41,7 +40,6 @@ MainStroke.Color = Color3.fromRGB(138, 43, 226) -- Tím neon
 MainStroke.Thickness = 2
 MainStroke.Parent = MainFrame
 
--- Hiệu ứng mở bảng chính
 task.spawn(function()
     local openTween = TweenService:Create(MainFrame, TweenInfo.new(0.35, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
         Size = UDim2.new(0, 590, 0, 490),
@@ -61,7 +59,6 @@ local function closeUI(callback)
     if callback then callback() end
 end
 
--- Tiêu đề (Top Bar)
 local TopBar = Instance.new("Frame")
 TopBar.Name = "TopBar"
 TopBar.Parent = MainFrame
@@ -108,7 +105,6 @@ CloseBtn.MouseButton1Click:Connect(function()
     closeUI()
 end)
 
--- Nút Join Discord
 local DiscordBtn = Instance.new("TextButton")
 DiscordBtn.Parent = MainFrame
 DiscordBtn.BackgroundColor3 = Color3.fromRGB(88, 101, 242)
@@ -142,7 +138,6 @@ DiscordBtn.MouseButton1Click:Connect(function()
     DiscordBtn.Text = " 💬 Join Discord Server"
 end)
 
--- Thanh cuộn danh sách game (Bên trái)
 local ScrollingFrame = Instance.new("ScrollingFrame")
 ScrollingFrame.Parent = MainFrame
 ScrollingFrame.BackgroundColor3 = Color3.fromRGB(12, 12, 18)
@@ -158,9 +153,6 @@ UIListLayout.Parent = ScrollingFrame
 UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
 UIListLayout.Padding = UDim.new(0, 10)
 
--- ==========================================
--- BẢNG QUÉT ID GAME HIỆN TẠI (BÊN PHẢI)
--- ==========================================
 local ScannerFrame = Instance.new("Frame")
 ScannerFrame.Parent = MainFrame
 ScannerFrame.BackgroundColor3 = Color3.fromRGB(20, 18, 30)
@@ -187,7 +179,6 @@ ScannerTitle.TextColor3 = Color3.fromRGB(0, 229, 255)
 ScannerTitle.TextSize = 13
 ScannerTitle.TextXAlignment = Enum.TextXAlignment.Center
 
--- Thumbnail game hiện tại
 local ScanThumb = Instance.new("ImageLabel")
 ScanThumb.Parent = ScannerFrame
 ScanThumb.BackgroundColor3 = Color3.fromRGB(12, 12, 18)
@@ -205,7 +196,6 @@ ScanThumbStroke.Color = Color3.fromRGB(255, 105, 180)
 ScanThumbStroke.Thickness = 1
 ScanThumbStroke.Parent = ScanThumb
 
--- Tên game hiện tại
 local ScanName = Instance.new("TextLabel")
 ScanName.Parent = ScannerFrame
 ScanName.BackgroundTransparency = 1
@@ -219,7 +209,6 @@ ScanName.TextYAlignment = Enum.TextYAlignment.Top
 ScanName.TextWrapped = true
 ScanName.Text = "Đang quét..."
 
--- ID game hiện tại
 local ScanIdLabel = Instance.new("TextLabel")
 ScanIdLabel.Parent = ScannerFrame
 ScanIdLabel.BackgroundTransparency = 1
@@ -231,7 +220,6 @@ ScanIdLabel.TextSize = 11
 ScanIdLabel.TextXAlignment = Enum.TextXAlignment.Center
 ScanIdLabel.Text = "ID: ..."
 
--- Trạng thái có trong danh sách hay không
 local ScanStatus = Instance.new("TextLabel")
 ScanStatus.Parent = ScannerFrame
 ScanStatus.BackgroundTransparency = 1
