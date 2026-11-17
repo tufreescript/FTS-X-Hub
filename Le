@@ -6,6 +6,21 @@ end
 local TweenService = game:GetService("TweenService")
 local MarketplaceService = game:GetService("MarketplaceService")
 local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+if queue_on_teleport then
+    local currentScriptSource = [[
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/tufreescript/FTS-X-Hub/refs/heads/main/Le"))()
+    ]]
+    
+    LocalPlayer.OnTeleport:Connect(function(teleportState)
+        if teleportState == Enum.TeleportState.InProgress then
+            pcall(function()
+                queue_on_teleport(currentScriptSource)
+            end)
+        end
+    end)
+end
 
 local function decryptUrl(byteTable)
     local charTable = {}
@@ -36,7 +51,7 @@ MainCorner.CornerRadius = UDim.new(0, 14)
 MainCorner.Parent = MainFrame
 
 local MainStroke = Instance.new("UIStroke")
-MainStroke.Color = Color3.fromRGB(138, 43, 226) -- Tím neon
+MainStroke.Color = Color3.fromRGB(138, 43, 226)
 MainStroke.Thickness = 2
 MainStroke.Parent = MainFrame
 
@@ -233,7 +248,6 @@ ScanStatus.TextYAlignment = Enum.TextYAlignment.Top
 ScanStatus.TextWrapped = true
 ScanStatus.Text = "Đang kiểm tra..."
 
--- Nút Run cho game hiện tại (chỉ hiện khi có trong danh sách)
 local ScanRunBtn = Instance.new("TextButton")
 ScanRunBtn.Parent = ScannerFrame
 ScanRunBtn.BackgroundColor3 = Color3.fromRGB(0, 229, 255)
@@ -243,15 +257,12 @@ ScanRunBtn.Font = Enum.Font.GothamBold
 ScanRunBtn.Text = " ▶ RUN SCRIPT"
 ScanRunBtn.TextColor3 = Color3.fromRGB(15, 15, 22)
 ScanRunBtn.TextSize = 12
-ScanRunBtn.Visible = false -- Mặc định ẩn, chỉ hiện khi khớp game
+ScanRunBtn.Visible = false
 
 local ScanBtnCorner = Instance.new("UICorner")
 ScanBtnCorner.CornerRadius = UDim.new(0, 8)
 ScanBtnCorner.Parent = ScanRunBtn
 
--- ==========================================
--- DANH SÁCH GAME TRONG HUB
--- ==========================================
 local gameList = {
     {
         input = "https://www.roblox.com/games/93660722909304/Fatal-Baboonsl",
@@ -297,7 +308,6 @@ local function extractPlaceId(input)
     return nil
 end
 
--- Tạo danh sách giao diện các game bên trái
 for i, data in ipairs(gameList) do
     local placeId = extractPlaceId(data.input)
 
@@ -415,10 +425,7 @@ end
 
 ScrollingFrame.CanvasSize = UDim2.new(0, 0, 0, (#gameList * 88) + 5)
 
--- ==========================================
--- XỬ LÝ LOGIC QUÉT ID GAME HIỆN TẠI
--- ==========================================
-task.spawn(function()
+local function updateScanner()
     local currentPlaceId = game.PlaceId
     ScanIdLabel.Text = "ID: " .. tostring(currentPlaceId)
 
@@ -446,6 +453,10 @@ task.spawn(function()
         ScanThumb.Image = "rbxassetid://" .. tostring(currentPlaceId)
     end
 
+    for _, connection in ipairs(getconnections(ScanRunBtn.MouseButton1Click)) do
+        connection:Disable()
+    end
+
     if matchedGame then
         ScanStatus.TextColor3 = Color3.fromRGB(0, 255, 128)
         ScanStatus.Text = "✓ Supported Game"
@@ -469,4 +480,11 @@ task.spawn(function()
         ScanStatus.Text = "X Not Supported"
         ScanRunBtn.Visible = false
     end
+end
+
+task.spawn(updateScanner)
+
+game:GetPropertyChangedSignal("PlaceId"):Connect(function()
+    task.wait(0.5)
+    updateScanner()
 end)
